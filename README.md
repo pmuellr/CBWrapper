@@ -20,7 +20,7 @@ CBWrapper-logThrows.js usage
 ============================
 
 Include the following code in your HTML file, 
-before any other <script> elements:
+before any other `<script>` elements:
 
 ```html
 <script src="CBWrapper.js"></script>
@@ -37,8 +37,8 @@ window.setTimeout()
 window.setInterval()
 window.addEventListener()
 window.applicationCache.addEventListener()
-<Node>.addEventListener()
-<XMLHttpRequest>.addEventListener()
+[instance of Node].addEventListener()
+[instance of XMLHttpRequest].addEventListener()
 
 ```
 
@@ -68,7 +68,7 @@ under JSC
 
 ```
 exception: TypeError: Result of expression 'xScript' [null] is not an object.
-location:  https://pmuellr-mb.homeip.net/~pmuellr/Projects/CBWrapper/tests/script-runtime-error-function.js:8
+location:  https://[[url-elided]]/CBWrapper/tests/script-runtime-error-function.js:8
 callback:  window.setTimeout(aScript(), 2000)
 ```
 
@@ -78,13 +78,13 @@ under V8
 
 ```
 exception: TypeError: Cannot call method 'doSomething' of null
-callback:  window.setTimeout(aScript(), 2000) [http://pmuellr.muellerware.org/~pmuellr/Projects/CBWrapper/tests/test-weinre-runtime-function-script.html:10]
+callback:  window.setTimeout(aScript(), 2000) [http://[[url-elided]]/CBWrapper/tests/test-weinre-runtime-function-script.html:10]
 stack:
 TypeError: Cannot call method 'doSomething' of null
-    at bScript (http://pmuellr.muellerware.org/~pmuellr/Projects/CBWrapper/tests/script-runtime-error-function.js:8:11)
-    at aScript (http://pmuellr.muellerware.org/~pmuellr/Projects/CBWrapper/tests/script-runtime-error-function.js:3:5)
-    at cbWrapper (http://pmuellr.muellerware.org/~pmuellr/Projects/CBWrapper/CBWrapper.js:253:27)
-    at http://pmuellr.muellerware.org:8081/target/target-script-min.js#test:3674:14
+    at bScript (http://[[url-elided]]/CBWrapper/tests/script-runtime-error-function.js:8:11)
+    at aScript (http://[[url-elided]]/CBWrapper/tests/script-runtime-error-function.js:3:5)
+    at cbWrapper (http://[[url-elided]]/CBWrapper/CBWrapper.js:253:27)
+    at http://[[url-elided]]/target/target-script-min.js#test:3674:14
 ```
 
 WARNING
@@ -104,8 +104,6 @@ CBWrapper.js
 The `CBWrapper-logThrows.js` file is just a snippet of code that runs functions
 defined in `CBWrapper.js`.  `CBWrapper.js` provides the core functionality of
 being able to hook callbacks.  
-
-API:
 
 CBWrapper.addWrapper(wrapper)
 -----------------------------

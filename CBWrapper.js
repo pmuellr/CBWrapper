@@ -72,7 +72,7 @@ CBWrapper.wrapoff = function CBWrapper_wrapoff() {
 //----------------------------------------------------------------------------
 // enable a wrappable call site
 //----------------------------------------------------------------------------
-CBWrapper.enableWrapper = function CBWrapper_enableWrapper(object, property, cbIndex, describer) {
+CBWrapper.enableWrapperFor = function CBWrapper_enableWrapperFor(object, property, cbIndex, describer) {
     if (!object) return
 
     var wrapSite = {
@@ -90,12 +90,12 @@ CBWrapper.enableWrapper = function CBWrapper_enableWrapper(object, property, cbI
 // enable default wrappers for the browser
 //----------------------------------------------------------------------------
 CBWrapper.enableBrowserWrappers = function CBWrapper_enableBrowserWrappers() {
-    CBWrapper.enableWrapper(window,                   "setTimeout",       0, describerTimer)
-    CBWrapper.enableWrapper(window,                   "setInterval",      0, describerTimer)
-    CBWrapper.enableWrapper(window,                   "addEventListener", 1, describerWindow_addEventListener)
-    CBWrapper.enableWrapper(window.applicationCache,  "addEventListener", 1, describerApplicationCache_addEventListener)
-    CBWrapper.enableWrapper(Node.prototype,           "addEventListener", 1, describerNode_addEventListener)
-    CBWrapper.enableWrapper(XMLHttpRequest.prototype, "addEventListener", 1, describerXMLHttpRequest_addEventListener)
+    CBWrapper.enableWrapperFor(window,                   "setTimeout",       0, describerTimer)
+    CBWrapper.enableWrapperFor(window,                   "setInterval",      0, describerTimer)
+    CBWrapper.enableWrapperFor(window,                   "addEventListener", 1, describerWindow_addEventListener)
+    CBWrapper.enableWrapperFor(window.applicationCache,  "addEventListener", 1, describerApplicationCache_addEventListener)
+    CBWrapper.enableWrapperFor(Node.prototype,           "addEventListener", 1, describerNode_addEventListener)
+    CBWrapper.enableWrapperFor(XMLHttpRequest.prototype, "addEventListener", 1, describerXMLHttpRequest_addEventListener)
 }
 
 //----------------------------------------------------------------------------
