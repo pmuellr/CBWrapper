@@ -1,0 +1,177 @@
+<!--
+ * Copyright (c) 2011 Patrick Mueller
+ * 
+ * The MIT License - see: http://www.opensource.org/licenses/mit-license.php
+-->
+
+<meta name='viewport' content='width=device-width'>
+
+<script src="CBWrapper.js"></script>
+<script src="CBWrapper-logThrows.js"></script>
+
+<p>
+<input id="button-start" type="button" value="start">
+<input id="button-throw" type="button" value="throw">
+
+<p>XHR ready state: <span id="ready-state"></span>
+
+<script>
+
+//------------------------------------------------------
+// callback diagnostic code for the page
+//------------------------------------------------------
+
+//------------------------------------------------------
+// wrapper to time code running in callbacks
+//------------------------------------------------------
+CBWrapper.addWrapper({
+    before: timerWrapperBefore,
+    after:  timerWrapperAfter
+})
+
+//------------------------------------------------------
+// wrapper to log the elapsed time of an XHR transaction
+//------------------------------------------------------
+CBWrapper.addWrapper({
+    before: xhrWrapperBefore
+})
+
+//------------------------------------------------------
+// wrapper to time code running in callbacks
+//------------------------------------------------------
+function timerWrapperBefore(wrapData) {
+    // save time before callback is invoked
+    wrapData.callData.timerStart = new Date().getTime()
+}
+
+function timerWrapperAfter(wrapData) {
+    // calculate elapsed time in callback
+    var elapsed = new Date().getTime() - wrapData.callData.timerStart
+    console.log(wrapData.siteName + ": elapsed " + elapsed)
+}
+
+//------------------------------------------------------
+// wrapper to log the elapsed time of an XHR transaction
+//------------------------------------------------------
+function xhrWrapperBefore(wrapData) {
+
+    // only care about XHRs
+    if (!(wrapData.receiver instanceof XMLHttpRequest)) return
+
+    // at readyState == 1?  start timer    
+    if (wrapData.args[0].target.readyState == 1) {
+        wrapData.receiver.xhrStart = new Date().getTime() 
+    }
+    
+    // at readyState == 4?  stop timer    
+    if (wrapData.args[0].target.readyState == 4) {
+        var elapsed = new Date().getTime() - wrapData.receiver.xhrStart
+        console.log("xhr took " + elapsed + " millis")
+    }
+}
+
+//------------------------------------------------------
+// "business logic" for the page
+//------------------------------------------------------
+
+var buttonStart
+var readyStateSpan
+var started
+var interval
+
+window.addEventListener("load", onLoad, false)
+
+//------------------------------------------------------
+function onLoad() {
+    buttonStart  = document.getElementById("button-start")
+    buttonThrow  = document.getElementById("button-throw")
+    
+    buttonStart.addEventListener("click",     onClick,     false)
+    buttonStart.addEventListener("mouseover", onMouseOver, false)
+    buttonStart.addEventListener("mouseout",  onMouseOut,  false)
+
+    buttonThrow.addEventListener("click",     onThrow,     false)
+
+    readyStateSpan = document.getElementById("ready-state")
+}
+
+//------------------------------------------------------
+function onClick() {
+    started ? stop() : start()
+}
+
+//------------------------------------------------------
+function onMouseOver() {
+    buttonStart.style.color = "green"
+}
+
+//------------------------------------------------------
+function onMouseOut() {
+    buttonStart.style.color = ""
+    
+    var width = window.getComputedStyle(buttonStart).width
+    
+    for (var loop=0; loop < 100; loop++) {
+        for (var i=40; i<200; i++) {
+            buttonStart.style.width = i
+            window.getComputedStyle(buttonStart)
+        }
+    }
+    
+    buttonStart.style.width = width
+}
+
+//------------------------------------------------------
+function onThrow() {
+    itThrows()
+}
+
+//------------------------------------------------------
+function itThrows() {
+    throw new Error("throw button pressed")
+}
+
+//------------------------------------------------------
+function start() {
+    started = true
+    buttonStart.value = "stop"
+    
+    interval = setInterval(onInterval, 1000)
+}
+
+//------------------------------------------------------
+function stop() {
+    started = false
+    buttonStart.value = "start"
+    
+    clearInterval(interval)
+}
+
+//------------------------------------------------------
+function onInterval() {
+    setTimeout(onTimeout1, 200)
+    setTimeout(onTimeout2, 600)
+}
+
+//------------------------------------------------------
+function onTimeout1() {
+    buttonStart.style.color = "red"
+}
+
+//------------------------------------------------------
+function onTimeout2() {
+    buttonStart.style.color = ""
+    
+    var xhr = new XMLHttpRequest()
+    xhr.addEventListener("readystatechange", onReadyStateChange, false)
+    xhr.open("GET", location.href, true)
+    xhr.send()
+}
+
+//------------------------------------------------------
+function onReadyStateChange(event) {
+    readyStateSpan.innerText = event.target.readyState
+}
+
+</script>
+
