@@ -78,7 +78,8 @@ under V8
 
 ```
 exception: TypeError: Cannot call method 'doSomething' of null
-callback:  window.setTimeout(aScript(), 2000) [http://[[url-elided]]/CBWrapper/tests/test-weinre-runtime-function-script.html:10]
+callback:  window.setTimeout(aScript(), 2000) 
+           [http://[[url-elided]]/CBWrapper/tests/test-weinre-runtime-function-script.html:10]
 stack:
 TypeError: Cannot call method 'doSomething' of null
     at bScript (http://[[url-elided]]/CBWrapper/tests/script-runtime-error-function.js:8:11)
